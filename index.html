@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connect - A platform for scheduling mock interviews. Link up for mock interviews the chill way—zero bucks, all vibes.">    
+    <meta name="keywords" content="mock interviews, peer interviews, practice interviews, tech interviews, career preparation">
+    <meta name="author" content="Stare">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Connect - A Stare Product">
+    <meta property="og:description" content="Link up for mock interviews the chill way—zero bucks, all vibes.">
+    <meta property="og:site_name" content="Connect">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Connect - A Stare Product">
+    <meta name="twitter:description" content="Link up for mock interviews the chill way—zero bucks, all vibes.">
+    <title>Connect - A Stare Product</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #F7F7F7;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            color: #FF6B6B;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        h1 a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        h1 a:hover {
+            color: #FF6B6B;
+        }
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #4ECDC4;
+            font-size: 1.8em;
+            margin-top: 40px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        .section {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        #calendar-container {
+            position: relative;
+            width: 100%;
+            min-height: 450px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #calendar-frame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #calendar-error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .retry-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #4ECDC4;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .retry-btn:hover {
+            background: #FF6B6B;
+        }
+        .calendar p {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .calendar a {
+            color: #4ECDC4;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .calendar a:hover {
+            color: #FF6B6B;
+        }
+        .funny {
+            font-style: italic;
+            color: #888;
+            font-size: 0.95em;
+        }
+        ol li {
+            margin-bottom: 20px;
+        }
+        .template {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-top: 10px;
+        }
+        .copy-btn {
+            background-color: #4ECDC4;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .copy-btn:hover {
+            background-color: #FF6B6B;
+        }
+        .tips {
+            background-color: #E6FCFA;
+            padding: 20px;
+            border-left: 5px solid #4ECDC4;
+            border-radius: 5px;
+        }
+        .tips ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .tips li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 25px;
+        }
+        .tips li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            color: #FF6B6B;
+        }
+        .timezone-selector {
+            margin: 10px 0;
+            text-align: center;
+        }
+        .timezone-selector select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-left: 10px;
+            background-color: white;
+        }
+        .timezone-selector label {
+            color: #666;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        footer a {
+            color: #4ECDC4;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #FF6B6B;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.5em; }
+            .section { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Connect - A <a href="http://thestare.in/" target="_blank">Stare</a> Product</h1>
+        <p class="subtitle">Link up for mock interviews the chill way—zero bucks, all vibes.</p>
+    </header>
+
+    <div class="section">
+        <h2>The Hangout Calendar</h2>
+        <div class="calendar">
+            <div id="calendar-container">
+                <iframe id="calendar-frame" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no" onload="this.style.opacity='1'" onerror="handleCalendarError()"></iframe>
+                <div class="timezone-selector">
+                    <label>Time Zone:</label>
+                    <select id="timezone-select" onchange="updateCalendarTimeZone(this.value)"></select>
+                </div>
+                <div id="calendar-error" style="display: none;">
+                    <p>😅 Oops! Calendar's taking a coffee break.</p>
+                    <a href="https://calendar.google.com/calendar/embed?src=cf98f168f7eae662d522aba3668b5bcc239c05ff66c072df09201dd9076761f4%40group.calendar.google.com&ctz=Asia%2FKolkata" target="_blank" class="retry-btn">Open in New Tab</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>How to Roll With It</h2>
+        <ol>
+            <li>
+                <strong>Add Your Time, Be a Star:</strong> Got a free hour to help someone? Pop an event on the calendar. Call it “Mock Interview - [Your Name/Skill]” (like “Mock Interview - PM Prep with Saurao”). In the description, add “Ping me on LinkedIn!” with your LinkedIn link. 
+                <span class="funny">Now everyone knows you’re a big deal.</span>
+            </li>
+            <li>
+                <strong>Pick a Time, Peek Their Profile:</strong> Look at the calendar like it’s a menu. See a slot you like? Click the LinkedIn link in the description to check out who they are (networking bonus!). Message them on LinkedIn with this:
+                <div class="template" id="templateText">
+Hi [Name], I’m [Your Name]. Can I grab your [time] slot on [date] from Connect? I’m practicing for [skill/job]. Thanks!
+                </div>
+                <button class="copy-btn" onclick="copyTemplate()">Copy This, Easy Peasy</button>
+                <span class="funny">Hit copy, paste it, and you’re halfway to a new work buddy.</span>
+            </li>
+            <li>
+                <strong>Make It Official:</strong> If you’re the star, chat on LinkedIn, then add their email to your event as a guest. Hit save. Google Calendar sends them a fancy invite with a Meet link. 
+                <span class="funny">Look at you, all professional and stuff.</span>
+            </li>
+            <li>
+                <strong>Meet Up:</strong> Click the Meet link when it’s time. Talk, practice, win. Done! 
+                <span class="funny">Don’t sleep through it, or LinkedIn will tell tales.</span>
+            </li>
+        </ol>
+    </div>
+
+    <div class="section tips">
+        <h2>Pro Moves for the Squad</h2>
+        <ul>
+            <li><strong>Recurring Vibes:</strong> Too busy to keep adding slots? Set it to repeat—click “Does not repeat” and pick “Every Wednesday” or whatever. Auto-pilot mode, activated.</li>
+            <li><strong>Time Zone Check:</strong> Slap your time zone in the description (e.g., “10 AM IST”) so no one’s ghosting you from another planet.</li>
+            <li><strong>Chat It Up:</strong> Tick “Guests can see guest list” in event settings. Let peeps comment “Yo, I’m in!” instead of LinkedIn-ing. Less typing, more winning.</li>
+            <li><strong>Clean the Slate:</strong> Ditch a slot? Delete it. No one likes a calendar full of fake promises.</li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>Glitches? Ping me on <a href="https://www.linkedin.com/in/saurao-dalvi/" target="_blank">LinkedIn</a> | Made with love (and too much coffee) by <a href="https://www.linkedin.com/in/saurao-dalvi/" target="_blank">Saurao Dalvi</a> | Warning: May cause excessive interview wins.</p>
+    </footer>
+
+    <script>
+        function loadTimeZones() {
+            const select = document.getElementById('timezone-select');
+            const timeZones = Intl.supportedValuesOf('timeZone');
+            const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            
+            timeZones.forEach(zone => {
+                const option = new Option(zone, zone);
+                if (zone === userTimeZone) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+            
+            updateCalendarTimeZone(userTimeZone);
+        }
+
+        function updateCalendarTimeZone(timeZone) {
+            const frame = document.getElementById('calendar-frame');
+            const baseUrl = 'https://calendar.google.com/calendar/embed?';
+            const params = new URLSearchParams({
+                src: 'cf98f168f7eae662d522aba3668b5bcc239c05ff66c072df09201dd9076761f4@group.calendar.google.com',
+                ctz: timeZone,
+                showTitle: '0',
+                showNav: '1',
+                showPrint: '0',
+                showTabs: '1',
+                showCalendars: '0',
+                mode: 'WEEK'
+            });
+            frame.src = baseUrl + params.toString();
+        }
+
+        window.onload = loadTimeZones;
+
+        function copyTemplate() {
+            const text = document.getElementById("templateText").innerText.trim(); // Trim to remove extra whitespace
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied! Paste it on LinkedIn and make a friend.");
+            });
+        }
+        function handleCalendarError() {
+            document.getElementById('calendar-frame').style.display = 'none';
+            document.getElementById('calendar-error').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
