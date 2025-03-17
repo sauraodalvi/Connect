@@ -217,7 +217,7 @@
                 <iframe id="calendar-frame" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no" onload="this.style.opacity='1'" onerror="handleCalendarError()" src="https://calendar.google.com/calendar/embed?src=cf98f168f7eae662d522aba3668b5bcc239c05ff66c072df09201dd9076761f4@group.calendar.google.com&showTitle=0&showNav=1&showPrint=0&showTabs=1&showCalendars=0&mode=WEEK"></iframe>
                 <div class="timezone-selector">
                     <label>Time Zone:</label>
-                    <select id="timezone-select" onchange="updateCalendarTimeZone(this.value)"></select>
+                    <select id="timezone-select"></select>
                 </div>
                 <div id="calendar-error" style="display: none;">
                     <p>😅 Oops! Calendar's taking a coffee break.</p>
@@ -285,30 +285,24 @@ Hi [Name], I’m [Your Name]. Can I grab your [time] slot on [date] from Connect
                 select.appendChild(option);
             });
             
-            updateCalendarTimeZone(userTimeZone);
-        }
-
-        function updateCalendarTimeZone(timeZone) {
-            const frame = document.getElementById('calendar-frame');
-            const baseUrl = 'https://calendar.google.com/calendar/embed?';
-            const params = new URLSearchParams({
-                src: 'cf98f168f7eae662d522aba3668b5bcc239c05ff66c072df09201dd9076761f4@group.calendar.google.com',
-                ctz: timeZone,
-                showTitle: '0',
-                showNav: '1',
-                showPrint: '0',
-                showTabs: '1',
-                showCalendars: '0',
-                mode: 'WEEK'
+            updateCalendarTimezone(userTimeZone);
+            
+            // Add event listener for timezone changes
+            select.addEventListener('change', function() {
+                updateCalendarTimezone();
             });
-            frame.src = baseUrl + params.toString();
         }
 
-        window.onload = function() {
+        function updateCalendarTimezone() {
+            const select = document.getElementById('timezone-select');
+            const frame = document.getElementById('calendar-frame');
+            const baseUrl = frame.src.split('?')[0];
+            frame.src = `${baseUrl}?src=cf98f168f7eae662d522aba3668b5bcc239c05ff66c072df09201dd9076761f4@group.calendar.google.com&showTitle=0&showNav=1&showPrint=0&showTabs=1&showCalendars=0&mode=WEEK&ctz=${encodeURIComponent(select.value)}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
             loadTimeZones();
-            const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            updateCalendarTimeZone(userTimeZone);
-        };
+        });
 
         function copyTemplate() {
             const text = "Hi [Name], I'm [Your Name]. Can I grab your [time] slot on [date] from Connect? I'm practicing for [skill/job]. Thanks!";
@@ -319,7 +313,9 @@ Hi [Name], I’m [Your Name]. Can I grab your [time] slot on [date] from Connect
                 setTimeout(() => {
                     btn.textContent = originalText;
                 }, 2000);
+            });
         }
+
         function handleCalendarError() {
             document.getElementById('calendar-frame').style.display = 'none';
             document.getElementById('calendar-error').style.display = 'block';
