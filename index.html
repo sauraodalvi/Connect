@@ -214,7 +214,7 @@
         <h2>The Hangout Calendar</h2>
         <div class="calendar">
             <div id="calendar-container">
-                <iframe id="calendar-frame" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no" onload="this.style.opacity='1'" onerror="handleCalendarError()"></iframe>
+                <iframe id="calendar-frame" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no" onload="this.style.opacity='1'" onerror="handleCalendarError()" src="https://calendar.google.com/calendar/embed?src=cf98f168f7eae662d522aba3668b5bcc239c05ff66c072df09201dd9076761f4@group.calendar.google.com&showTitle=0&showNav=1&showPrint=0&showTabs=1&showCalendars=0&mode=WEEK"></iframe>
                 <div class="timezone-selector">
                     <label>Time Zone:</label>
                     <select id="timezone-select" onchange="updateCalendarTimeZone(this.value)"></select>
@@ -231,8 +231,12 @@
         <h2>How to Roll With It</h2>
         <ol>
             <li>
-                <strong>Add Your Time, Be a Star:</strong> Got a free hour to help someone? Pop an event on the calendar. Call it “Mock Interview - [Your Name/Skill]” (like “Mock Interview - PM Prep with Saurao”). In the description, add “Ping me on LinkedIn!” with your LinkedIn link. 
-                <span class="funny">Now everyone knows you’re a big deal.</span>
+                <strong>Add the Calendar First:</strong> Click the '+ Google Calendar' button at the bottom right of the calendar to add it to your Google Calendar. This lets you create and manage interview slots.
+                <span class="funny">One click, and you're in the cool kids' club.</span>
+            </li>
+            <li>
+                <strong>Add Your Time, Be a Star:</strong> Got a free hour to help someone? Pop an event on the calendar. Call it "Mock Interview - [Your Name/Skill]" (like "Mock Interview - PM Prep with Saurao"). In the description, add "Ping me on LinkedIn!" with your LinkedIn link. 
+                <span class="funny">Now everyone knows you're a big deal.</span>
             </li>
             <li>
                 <strong>Pick a Time, Peek Their Profile:</strong> Look at the calendar like it’s a menu. See a slot you like? Click the LinkedIn link in the description to check out who they are (networking bonus!). Message them on LinkedIn with this:
@@ -300,13 +304,21 @@ Hi [Name], I’m [Your Name]. Can I grab your [time] slot on [date] from Connect
             frame.src = baseUrl + params.toString();
         }
 
-        window.onload = loadTimeZones;
+        window.onload = function() {
+            loadTimeZones();
+            const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            updateCalendarTimeZone(userTimeZone);
+        };
 
         function copyTemplate() {
-            const text = document.getElementById("templateText").innerText.trim(); // Trim to remove extra whitespace
+            const text = "Hi [Name], I'm [Your Name]. Can I grab your [time] slot on [date] from Connect? I'm practicing for [skill/job]. Thanks!";
+            const btn = document.querySelector(".copy-btn");
             navigator.clipboard.writeText(text).then(() => {
-                alert("Copied! Paste it on LinkedIn and make a friend.");
-            });
+                const originalText = btn.textContent;
+                btn.textContent = "Copied! ✨";
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
         }
         function handleCalendarError() {
             document.getElementById('calendar-frame').style.display = 'none';
