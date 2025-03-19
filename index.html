@@ -26,6 +26,74 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #FF6B6B;
+        }
+
+        .how-it-works-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4ECDC4;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .how-it-works-btn:hover {
+            background-color: #FF6B6B;
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h2 {
+            margin: 0;
+        }
             background-color: #F7F7F7;
             color: #333;
             line-height: 1.6;
@@ -230,6 +298,22 @@
             h2 { font-size: 1.5em; }
             .section { padding: 15px; }
         }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -239,7 +323,10 @@
     </header>
 
     <div class="section">
-        <h2>The Hangout Calendar</h2>
+        <div class="calendar-header">
+            <h2>The Hangout Calendar</h2>
+            <button class="how-it-works-btn" onclick="window.open('https://youtu.be/OnDB7PjA0Mo', '_blank')">How It Works</button>
+        </div>
         <div class="calendar">
             <div id="calendar-container">
                 <iframe id="calendar-frame" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no" onload="this.style.opacity='1'" onerror="handleCalendarError()" src="https://calendar.google.com/calendar/embed?src=cf98f168f7eae662d522aba3668b5bcc239c05ff66c072df09201dd9076761f4@group.calendar.google.com&showTitle=0&showNav=1&showPrint=0&showTabs=1&showCalendars=0&mode=WEEK"></iframe>
@@ -304,6 +391,34 @@ Hi [Name], I’m [Your Name]. Can I grab your [time] slot on [date] from Connect
             <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
         </svg>
     </button>
+
+    <div id="howItWorksModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>How It Works</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/OnDB7PjA0Mo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="steps-container">
+                <div class="step">
+                    <h3>1. Schedule Your Session</h3>
+                    <p>Choose a convenient time slot from our calendar for your mock interview session.</p>
+                </div>
+                <div class="step">
+                    <h3>2. Prepare Your Environment</h3>
+                    <p>Make sure you have a quiet space and stable internet connection for the interview.</p>
+                </div>
+                <div class="step">
+                    <h3>3. Join the Interview</h3>
+                    <p>Click the meeting link at your scheduled time to join your mock interview session.</p>
+                </div>
+                <div class="step">
+                    <h3>4. Get Feedback</h3>
+                    <p>Receive valuable feedback from your peer interviewer to improve your interview skills.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function loadTimeZones() {
